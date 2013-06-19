@@ -19,6 +19,7 @@
 AUTOMAKE_OPTIONS = foreign
 
 check_PROGRAMS = codectest \
+				 playfile \
 				 tempopitchtest \
 				 seektest \
 				 seek_on_continue
@@ -26,6 +27,9 @@ check_PROGRAMS = codectest \
 TESTS = codectest_wav.sh \
 		codectest_ogg.sh \
 		codectest_mp3.sh \
+		playfile_wav.sh \
+		playfile_ogg.sh \
+		playfile_mp3.sh \
 		tempopitchtest_wav.sh \
 		tempopitchtest_ogg.sh \
 		tempopitchtest_mp3.sh \
@@ -34,7 +38,12 @@ TESTS = codectest_wav.sh \
 		seektest_mp3.sh \
 		seek_on_continue
 
+TESTS = playfile_wav.sh \
+		playfile_ogg.sh \
+		playfile_mp3.sh
+
 codectest_SOURCES = codectest.cpp
+playfile_SOURCES = playfile.cpp
 tempopitchtest_SOURCES = tempopitchtest.cpp
 seektest_SOURCES = seektest.cpp
 seek_on_continue_SOURCES = seek_on_continue_data.cpp seek_on_continue.cpp
@@ -48,6 +57,9 @@ EXTRA_DIST = setup_logging.h \
 			 codectest_wav.sh \
 			 codectest_ogg.sh \
 			 codectest_mp3.sh \
+			 playfile_wav.sh \
+			 playfile_ogg.sh \
+			 playfile_mp3.sh \
 			 tempopitchtest_wav.sh \
 			 tempopitchtest_ogg.sh \
 			 tempopitchtest_mp3.sh \

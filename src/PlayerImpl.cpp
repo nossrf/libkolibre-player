@@ -503,6 +503,15 @@ bool PlayerImpl::setupThread()
 }
 
 /**
+ * Play a file in a new thread without invoking any callbacks
+ *
+ * @param filename URL or file to play
+ */
+void PlayerImpl::playFile(std::string filename)
+{
+}
+
+/**
  * Open a file and go to paused state
  *
  * @param filename URL of file to open

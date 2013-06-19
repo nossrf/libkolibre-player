@@ -36,6 +36,7 @@ struct PlayerImpl
 
     bool enable(int *argc, char **argv[]);
 
+    void playFile(std::string filename);
     void open(const char *url, const char *startms, const char *stopms);
     void open(std::string filename, long long startms, long long stopms);
     void open(std::string filename, long long startms);

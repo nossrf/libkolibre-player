@@ -155,6 +155,16 @@ boost::signals2::connection Player::doOnPlayerTime(OnPlayerTime::slot_type slot)
 }
 
 /**
+ * Play a file in a new thread without invoking any callbacks
+ *
+ * @param filename URL or file to play
+ */
+void Player::playFile(std::string filename)
+{
+    p_impl->playFile(filename);
+}
+
+/**
  * Open a file and go to paused state
  *
  * @param filename URL of file to open
