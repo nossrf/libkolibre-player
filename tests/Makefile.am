@@ -24,6 +24,8 @@ check_PROGRAMS = codectest \
 				 playersignaltest \
 				 seek_on_continue
 
+check_PROGRAMS = streamseek
+
 TESTS = codectest_wav.sh \
 		codectest_ogg.sh \
 		codectest_mp3.sh \
@@ -40,10 +42,13 @@ playersignaltest_SOURCES = player_signal_test.cpp
 playersignaltest_CPPFLAGS = -I$(top_srcdir)/src -g @LOG4CXX_LIBS@ @GLIB_CFLAGS@ @GST_CFLAGS@ @PTHREAD_CFLAGS@
 playersignaltest_LDFLAGS = -I$(top_srcdir)/src $(top_builddir)/src/libkolibre_player_la-PlayerImpl.lo @GST_LIBS@ @GSTCONTROLLER_LIBS@ @PTHREAD_LIBS@ @LOG4CXX_LIBS@
 
+TESTS = streamseek
+
 codectest_SOURCES = codectest.cpp
 tempopitchtest_SOURCES = tempopitchtest.cpp
 seektest_SOURCES = seektest.cpp
 seek_on_continue_SOURCES = seek_on_continue_data.cpp seek_on_continue.cpp
+streamseek_SOURCES = streamseek.cpp
 
 LDADD = -lkolibre-player
 AM_LDFLAGS = -L$(top_builddir)/src @GST_LIBS@ @GSTCONTROLLER_LIBS@ @PTHREAD_LIBS@ @LOG4CXX_LIBS@
