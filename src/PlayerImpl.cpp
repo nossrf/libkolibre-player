@@ -1501,6 +1501,9 @@ static void dynamic_link (GstPadTemplate * templ, GstPad * newpad, gpointer data
  */
 GstElement *PlayerImpl::setupDatasource(GstBin *bin)
 {
+    GstElement *srcbin;
+    GstPad *pad, *ghost_pad;
+
     enum { http, https, file } sourcetype;
 
     // Get the filename
@@ -1552,11 +1555,17 @@ GstElement *PlayerImpl::setupDatasource(GstBin *bin)
             }
             if(!pDatasource || !pQueue2) goto fail_http;
 
-            gst_bin_add(bin, pDatasource);
-            gst_bin_add(bin, pQueue2);
-            gst_element_link(pDatasource, pQueue2);
+            srcbin = gst_bin_new("buffersrc");
+            gst_bin_add_many(GST_BIN(srcbin), pDatasource, pQueue2, NULL);
+            gst_element_link_many(pDatasource, pQueue2, NULL);
+            pad = gst_element_get_static_pad (pQueue2, "src");
+            ghost_pad = gst_ghost_pad_new ("src", pad);
+            gst_pad_set_active (ghost_pad, TRUE);
+            gst_element_add_pad (srcbin, ghost_pad);
+            gst_object_unref (pad);
+            gst_bin_add(bin, srcbin);
 
-            return pQueue2;
+            return srcbin;
 #else
             if(!pDatasource) goto fail_http;
 
