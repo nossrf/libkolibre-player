@@ -90,7 +90,7 @@ void PlayerControl::play()
     int counter = 1;
 
     // Give player thread 5 seconds to process and download
-    sleep(5);
+    sleep(10);
 
     while (!atEOS && counter < 10 )
     {
@@ -101,7 +101,7 @@ void PlayerControl::play()
         player->seekPos(pos);
 
         // Give player thread 5 second to process and download
-        sleep(5);
+        sleep(10);
 
         // Get current position
         //long long int getpos = player->getPos();
@@ -135,6 +135,10 @@ int main(int argc, char *argv[])
 
     PlayerControl playerControl;
     playerControl.setSource("http://thoth.pratsam.com/Avicii%20-%20Levels%20-%20YouTube.mp3");
+    //playerControl.setSource("http://thoth.pratsam.com/avicii_normal.wav");
+    //playerControl.setSource("http://thoth.pratsam.com/avicii_normal.ogg");
+    //playerControl.setSource("/home/johan/Example.ogg");
+    //playerControl.setSource("/home/johan/avicii_normal.ogg");
     playerControl.enable(argc, argv);
     playerControl.play();
 }

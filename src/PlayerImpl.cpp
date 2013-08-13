@@ -1547,8 +1547,14 @@ GstElement *PlayerImpl::setupDatasource(GstBin *bin)
             {
                 // setup queue2 element to keep 10MB data in memory
                 g_object_set(pQueue2, "max-size-buffers", 0, NULL); // disable buffers
+                //g_object_set(pQueue2, "max-size-bytes", 1048576, NULL); // 1MB
                 g_object_set(pQueue2, "max-size-bytes", 10485760, NULL); // 10MB
+                //g_object_set(pQueue2, "max-size-bytes", 104857600, NULL); // 100MB
                 g_object_set(pQueue2, "max-size-time", 0, NULL); // disable time buffer
+                //g_object_set(pQueue2, "temp-template", "/tmp/gstreamer-XXXXXX", NULL);
+                //g_object_set(pQueue2, "use-buffering", TRUE, NULL);
+                //g_object_set(pQueue2, "high-percent", 50, NULL);
+                //g_object_set(pQueue2, "low-percent", 2, NULL);
             }
             if(!pDatasource || !pQueue2) goto fail_http;
 
