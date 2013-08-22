@@ -48,6 +48,12 @@ Player * Player::Instance()
         pinstance = new Player;
     }
 
+    //If player has exited we need to create a new instance
+    else if(pinstance->getState() == EXITING){
+        delete pinstance;
+        pinstance = new Player;
+    }
+
     return pinstance;
 }
 
