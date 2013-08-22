@@ -51,9 +51,11 @@ Player * Player::Instance()
     //If player has exited we need to create a new instance
     else if(pinstance->getState() == EXITING){
         double tempo = pinstance->getTempo();
+        double pitch = pinstance->getPitch();
+        double treble = pinstance->getTreble();
         string useragent = pinstance->mUserAgent;
         delete pinstance;
-        pinstance = new Player(useragent, tempo);
+        pinstance = new Player(useragent, tempo, pitch, treble);
         //TODO: reuse parameters set from previous enable
         pinstance->enable(NULL, NULL);
     }
@@ -75,12 +77,14 @@ Player::Player() :
  * Initialize the player
  *
  */
-Player::Player(string useragent, double tempo) :
+Player::Player(string useragent, double tempo, double pitch, double treble) :
     p_impl( new PlayerImpl ),
     mUserAgent( useragent )
 {
     p_impl->setUseragent(useragent);
     p_impl->setTempo(tempo);
+    p_impl->setPitch(pitch);
+    p_impl->setTreble(treble);
 }
 
 Player::~Player()
