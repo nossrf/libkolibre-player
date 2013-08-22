@@ -50,8 +50,12 @@ Player * Player::Instance()
 
     //If player has exited we need to create a new instance
     else if(pinstance->getState() == EXITING){
+        double tempo = pinstance->getTempo();
+        string useragent = pinstance->mUserAgent;
         delete pinstance;
-        pinstance = new Player;
+        pinstance = new Player(useragent, tempo);
+        //TODO: reuse parameters set from previous enable
+        pinstance->enable(NULL, NULL);
     }
 
     return pinstance;
@@ -61,9 +65,22 @@ Player * Player::Instance()
  * Initialize the player
  *
  */
-Player::Player():
-    p_impl( new PlayerImpl )
+Player::Player() :
+    p_impl( new PlayerImpl ),
+    mUserAgent("")
 {
+}
+
+/**
+ * Initialize the player
+ *
+ */
+Player::Player(string useragent, double tempo) :
+    p_impl( new PlayerImpl ),
+    mUserAgent( useragent )
+{
+    p_impl->setUseragent(useragent);
+    p_impl->setTempo(tempo);
 }
 
 Player::~Player()
@@ -535,5 +552,6 @@ void Player::setEqualizer(GstElement *element, double bass, double treble)
  */
 void Player::setUseragent(string useragent)
 {
+    mUserAgent = useragent;
     p_impl->setUseragent(useragent);
 }

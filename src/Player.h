@@ -128,12 +128,15 @@ class Player
         bool isPlaying();
 
         Player();
+        Player(std::string useragent, double tempo);
         /*! \cond PRIVATE */
         // Instance of the player class
         static Player *pinstance;
 
         PlayerImpl* p_impl;
         /*! \endcond */
+
+        std::string mUserAgent;
 };
 
 #endif
