@@ -21,7 +21,8 @@ AUTOMAKE_OPTIONS = foreign
 check_PROGRAMS = codectest \
 				 tempopitchtest \
 				 seektest \
-				 seek_on_continue
+				 seek_on_continue \
+                 player_instance_test
 
 TESTS = codectest_wav.sh \
 		codectest_ogg.sh \
@@ -32,11 +33,13 @@ TESTS = codectest_wav.sh \
 		seektest_wav.sh \
 		seektest_ogg.sh \
 		seektest_mp3.sh \
-		seek_on_continue
+		seek_on_continue \
+        player_instance_test
 
 codectest_SOURCES = codectest.cpp
 tempopitchtest_SOURCES = tempopitchtest.cpp
 seektest_SOURCES = seektest.cpp
+playerinstancetest_SOURCES = seektest.cpp
 seek_on_continue_SOURCES = seek_on_continue_data.cpp seek_on_continue.cpp
 
 LDADD = -lkolibre-player
