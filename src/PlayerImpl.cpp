@@ -163,6 +163,7 @@ PlayerImpl::PlayerImpl():
     pOggdemux = NULL;
     pVorbisdec = NULL;
 
+    pMp3parse = NULL;
     pFlump3dec = NULL;
 
     pFaaddec = NULL;
@@ -1843,6 +1844,8 @@ bool PlayerImpl::setupMP3Pipeline()
     datasource = setupDatasource(GST_BIN(pPipeline));
 
     // Setup decoding
+    pMp3parse = gst_element_factory_make("mp3parse", "pMp3parse");
+    gst_bin_add(GST_BIN(pPipeline), pMp3parse);
     pFlump3dec = gst_element_factory_make("flump3dec", "pFlump3dec");
     gst_bin_add(GST_BIN(pPipeline), pFlump3dec);
 
@@ -1851,16 +1854,17 @@ bool PlayerImpl::setupMP3Pipeline()
 
 
     if (!datasource ||
-            !pFlump3dec ||
+            !pFlump3dec || !pMp3parse ||
             !postprocessing) goto fail;
 
     // Add the elements to the pPipeline
-    gst_element_link_many(datasource, pFlump3dec, postprocessing, NULL);
+    gst_element_link_many(datasource, pMp3parse, pFlump3dec, postprocessing, NULL);
 
     // We should now have the pipeline setup
     return bOk;
 
 fail:
+    LOG4CXX_ERROR(playerImplLog, "mp3parse:       " << (pMp3parse ? "OK" : "failed"));
     LOG4CXX_ERROR(playerImplLog, "flump3dec:      " << (pFlump3dec ? "OK" : "failed"));
     LOG4CXX_ERROR(playerImplLog, "pipeline:       " << (pPipeline ? "OK" : "failed"));
     LOG4CXX_ERROR(playerImplLog, "Internal error, please check your GStreamer installation.");
@@ -2072,6 +2076,7 @@ bool PlayerImpl::destroyPipeline()
             LOG4CXX_ERROR(playerImplLog, "Destroying objects separately");
             if(pOggdemux != NULL) gst_object_unref(pOggdemux);
             if(pVorbisdec != NULL) gst_object_unref(pVorbisdec);
+            if(pMp3parse != NULL) gst_object_unref(pMp3parse);
             if(pFlump3dec != NULL) gst_object_unref(pFlump3dec);
             if(pFaaddec != NULL) gst_object_unref(pFaaddec);
             if(pWavparse != NULL) gst_object_unref(pWavparse);
@@ -2128,6 +2133,7 @@ bool PlayerImpl::destroyPipeline()
     pVorbisdec = NULL;
 
     // Decoder for mp3
+    pMp3parse = NULL;
     pFlump3dec = NULL;
 
     // Decoder for aac

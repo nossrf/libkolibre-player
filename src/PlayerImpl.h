@@ -123,6 +123,7 @@ struct PlayerImpl
         *pVorbisdec,
 
         // Decoder for mp3
+        *pMp3parse,
         *pFlump3dec,
 
         // Decoder for aac
