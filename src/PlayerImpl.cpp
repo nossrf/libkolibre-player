@@ -2973,9 +2973,16 @@ bool handle_bus_message(GstMessage *message, PlayerImpl *p){
     LOG4CXX_TRACE(playerImplLog, "Got message from " << gst_element_get_name(GST_MESSAGE_SRC(message)) << " type: " << gst_message_type_get_name(GST_MESSAGE_TYPE(message)));
     if(p->pBus != NULL) {
 
+        long long int remaining = 0;
+        if (p->mPlayingStopms == UINT_MAX) {
+            remaining = p->duration - p->position;
+        } else {
+            remaining = p->mPlayingStopms - p->mPlayingms;
+        }
+
         switch (message->type) {
             case GST_MESSAGE_EOS:
-                LOG4CXX_WARN(playerImplLog, "Recieved EOS at " << TIME_STR(p->position) << " (" << TIME_STR_MS(p->mPlayingms) << ") / " << TIME_STR(p->duration) << " (-" << TIME_STR_MS(p->mPlayingStopms - p->mPlayingms) << ")");
+                LOG4CXX_WARN(playerImplLog, "Recieved EOS at " << TIME_STR(p->position) << " (" << TIME_STR_MS(p->mPlayingms) << ") / " << TIME_STR(p->duration) << " (-" << TIME_STR_MS(remaining) << ")");
 
                 ret = false;
                 p->lockMutex(p->dataMutex);
@@ -3098,7 +3105,7 @@ bool handle_bus_message(GstMessage *message, PlayerImpl *p){
                         if(p->mGstPending == GST_STATE_VOID_PENDING &&
                                 (oldstate == GST_STATE_PLAYING || oldstate == GST_STATE_PAUSED ||
                                  p->mGstState == GST_STATE_PLAYING || p->mGstState == GST_STATE_PLAYING)) {
-                            LOG4CXX_INFO(playerImplLog, gst_element_state_get_name(oldstate) << " -> " << gst_element_state_get_name(p->mGstState) << " at " << TIME_STR(p->position) <<  " (" << TIME_STR_MS(p->mPlayingms) << ") / " << TIME_STR(p->duration) << " (-" << TIME_STR_MS(p->mPlayingStopms - p->mPlayingms) << ")");
+                            LOG4CXX_INFO(playerImplLog, gst_element_state_get_name(oldstate) << " -> " << gst_element_state_get_name(p->mGstState) << " at " << TIME_STR(p->position) <<  " (" << TIME_STR_MS(p->mPlayingms) << ") / " << TIME_STR(p->duration) << " (-" << TIME_STR_MS(remaining) << ")");
                         } else {
                             LOG4CXX_DEBUG(playerImplLog, gst_element_state_get_name(oldstate) << " -> " << gst_element_state_get_name(p->mGstState) << " (pending: " << gst_element_state_get_name(p->mGstPending) << ")");
                         }
